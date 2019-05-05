@@ -1,14 +1,56 @@
 require("dotenv").config();
 
+var Spotify = require("node-spotify-api");
+
+// import spotify keys
 var keys = require("./keys.js");
 
-// access key info
+// access spotify key info
 var spotify = new Spotify(keys.spotify);
-
 
 // Spotify info:
 // Client ID c297f47adbcb4ede830320eb44072f79
 // Client Secret 6588a4ae0cc746cbb20a03b04a49926b
+
+// save command
+var command = process.argv[2];
+// console.log("command: " + command)
+
+// instructions to follow for each command
+switch (command) {
+    case "concert-this":
+        console.log("concert-this");
+        break;
+
+    case "spotify-this-song":
+        console.log("spotify-this-song");
+        break;
+
+    case "movie-this":
+        console.log("movie-this");
+        break;
+
+    case "do-what-it-says":
+        console.log("do-what-it-says");
+        break;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
