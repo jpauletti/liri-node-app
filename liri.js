@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+var axios = require("axios");
 var Spotify = require("node-spotify-api");
 
 // import spotify keys
@@ -36,7 +37,8 @@ function getSongInfo () {
     // if no song name was given, provide default
     if (songName === "") {
         // default to "The Sign" by Ace of Base
-        songName = "The Sign Ace of Base";    
+        songName = "The Sign Ace of Base";
+        console.log("You didn't enter a song.  Here's one we like.");    
     }
 
     spotify.search({ type: 'track', query: songName }, function(err, data) {
@@ -48,12 +50,45 @@ function getSongInfo () {
     // console.log("================="); 
     // console.log(data.tracks.items[0]); 
 
-    console.log("You didn't enter a song.  Here's one we like.");
     console.log("Song Name: " + data.tracks.items[0].name);
     console.log("Artist: " + data.tracks.items[0].artists[0].name);
     console.log("Album: " + data.tracks.items[0].album.name);
     console.log("Preview: " + data.tracks.items[0].album.external_urls.spotify); // preview link to the song on spotify
     });
+}
+
+
+
+// movie-this: OMDB API
+function getMovie () {
+
+    // pull movie name user entered
+    var movieName = process.argv.slice(3).join(" ");
+
+    // if no movie name was given, provide default
+    if (movieName === "") {
+        // default to Mr. Nobody
+        movieName = "Mr. Nobody";
+        console.log("You didn't enter a movie name.  Here's one we like.");
+    }
+
+    var queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + movieName;
+
+    axios.get(queryUrl)
+    .then(function (response) {
+        console.log(response.data.Title + " (" + response.data.Year +")");
+        console.log("Actors: " + response.data.Actors);
+        console.log("Plot: " + response.data.Plot);
+        console.log("Language: " + response.data.Language);
+        console.log("Country Produced: " + response.data.Country);
+        console.log("IMDb rating: " + response.data.imdbRating);
+        console.log("Rotten Tomatoes rating: " + response.data.Ratings[1].Value);
+
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
 }
 
 
@@ -78,7 +113,8 @@ switch (command) {
         break;
 
     case "movie-this":
-        console.log("movie-this");
+        // console.log("movie-this");
+        getMovie();
         break;
 
     case "do-what-it-says":
