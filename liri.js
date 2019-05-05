@@ -12,6 +12,55 @@ var spotify = new Spotify(keys.spotify);
 // Client ID c297f47adbcb4ede830320eb44072f79
 // Client Secret 6588a4ae0cc746cbb20a03b04a49926b
 
+
+// concert-this: bands in town API to get concerts
+function getConcerts () {
+
+    axios.get('/user?ID=12345')
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
+}
+
+// spotify-this-song: spotify api
+function getSongInfo () {
+
+    // pull song name user entered
+    var songName = process.argv.slice(3).join(" ");
+    // console.log("songName: " + songName);
+
+    // if no song name was given, provide default
+    if (songName === "") {
+        // default to "The Sign" by Ace of Base
+        songName = "The Sign Ace of Base";    
+    }
+
+    spotify.search({ type: 'track', query: songName }, function(err, data) {
+    if (err) {
+        return console.log('Error occurred: ' + err);
+    }
+ 
+    // console.log(data); 
+    // console.log("================="); 
+    // console.log(data.tracks.items[0]); 
+
+    console.log("You didn't enter a song.  Here's one we like.");
+    console.log("Song Name: " + data.tracks.items[0].name);
+    console.log("Artist: " + data.tracks.items[0].artists[0].name);
+    console.log("Album: " + data.tracks.items[0].album.name);
+    console.log("Preview: " + data.tracks.items[0].album.external_urls.spotify); // preview link to the song on spotify
+    });
+}
+
+
+
+
+
+
 // save command
 var command = process.argv[2];
 // console.log("command: " + command)
@@ -20,10 +69,12 @@ var command = process.argv[2];
 switch (command) {
     case "concert-this":
         console.log("concert-this");
+        getConcerts();
         break;
 
     case "spotify-this-song":
-        console.log("spotify-this-song");
+        // console.log("spotify-this-song");
+        getSongInfo();
         break;
 
     case "movie-this":
