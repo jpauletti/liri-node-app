@@ -2,6 +2,7 @@ require("dotenv").config();
 
 var axios = require("axios");
 var Spotify = require("node-spotify-api");
+var moment = require("moment");
 
 // import spotify keys
 var keys = require("./keys.js");
@@ -17,9 +18,28 @@ var spotify = new Spotify(keys.spotify);
 // concert-this: bands in town API to get concerts
 function getConcerts () {
 
-    axios.get('/user?ID=12345')
+    // pull artist name entered
+    var artistName = process.argv.slice(3).join(" ");
+
+    // if no song name was given, provide default
+    if (artistName === "") {
+        // default to "The Sign" by Ace of Base
+        artistName = "Julia Michaels";
+        console.log("You didn't enter an artist or band.  Here's one we like.");
+    }
+
+    var queryUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=codingbootcamp";
+
+    axios.get(queryUrl)
     .then(function (response) {
-        console.log(response);
+        // console.log(response.data);
+        console.log(artistName);
+        console.log(response.data[0].venue.name);
+        console.log(response.data[0].venue.city + ", " + response.data[0].venue.region);
+        var date = moment(response.data[0].datetime).format("MM/DD/YYYY");
+        console.log(date);
+        console.log(moment(response.data[0].datetime).format("hh:mm A"));
+
     })
     .catch(function (error) {
         console.log(error);
@@ -45,10 +65,6 @@ function getSongInfo () {
     if (err) {
         return console.log('Error occurred: ' + err);
     }
- 
-    // console.log(data); 
-    // console.log("================="); 
-    // console.log(data.tracks.items[0]); 
 
     console.log("Song Name: " + data.tracks.items[0].name);
     console.log("Artist: " + data.tracks.items[0].artists[0].name);
@@ -103,7 +119,7 @@ var command = process.argv[2];
 // instructions to follow for each command
 switch (command) {
     case "concert-this":
-        console.log("concert-this");
+        // console.log("concert-this");
         getConcerts();
         break;
 
