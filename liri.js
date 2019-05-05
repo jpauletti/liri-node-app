@@ -6,6 +6,11 @@ var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 
 
+// Spotify info:
+// Client ID c297f47adbcb4ede830320eb44072f79
+// Client Secret 6588a4ae0cc746cbb20a03b04a49926b
+
+
 
 
 
