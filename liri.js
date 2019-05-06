@@ -1,8 +1,9 @@
+// module requirements
 require("dotenv").config();
-
 var axios = require("axios");
 var Spotify = require("node-spotify-api");
 var moment = require("moment");
+var fs = require("fs");
 
 // import spotify keys
 var keys = require("./keys.js");
@@ -10,30 +11,18 @@ var keys = require("./keys.js");
 // access spotify key info
 var spotify = new Spotify(keys.spotify);
 
-// Spotify info:
-// Client ID c297f47adbcb4ede830320eb44072f79
-// Client Secret 6588a4ae0cc746cbb20a03b04a49926b
-
 
 // concert-this: bands in town API to get concerts
-function getConcerts () {
-
-    // pull artist name entered
-    var artistName = process.argv.slice(3).join(" ");
-
-    // if no song name was given, provide default
-    if (artistName === "") {
-        // default to "The Sign" by Ace of Base
-        artistName = "Julia Michaels";
-        console.log("You didn't enter an artist or band.  Here's one we like.");
-    }
+function getConcerts (artistName) {
 
     var queryUrl = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=codingbootcamp";
 
     axios.get(queryUrl)
     .then(function (response) {
         // limit to 10 results
-        response.data.length = 10;
+        if (response.data.length > 10) {
+            response.data.length = 10;
+        }
         // console.log(response.data);
 
         // show artist name
@@ -59,6 +48,10 @@ function getConcerts () {
             }
         }
 
+        if (response.data.length === 0) {
+            console.log("There are no upcoming events for that artist or band.");
+        }
+
 
     })
     .catch(function (error) {
@@ -67,19 +60,11 @@ function getConcerts () {
 
 }
 
+
+
+
 // spotify-this-song: spotify api
-function getSongInfo () {
-
-    // pull song name user entered
-    var songName = process.argv.slice(3).join(" ");
-    // console.log("songName: " + songName);
-
-    // if no song name was given, provide default
-    if (songName === "") {
-        // default to "The Sign" by Ace of Base
-        songName = "The Sign Ace of Base";
-        console.log("You didn't enter a song.  Here's one we like.");    
-    }
+function getSongInfo (songName) {
 
     spotify.search({ type: 'track', query: songName }, function(err, data) {
     if (err) {
@@ -95,18 +80,9 @@ function getSongInfo () {
 
 
 
+
 // movie-this: OMDB API
-function getMovie () {
-
-    // pull movie name user entered
-    var movieName = process.argv.slice(3).join(" ");
-
-    // if no movie name was given, provide default
-    if (movieName === "") {
-        // default to Mr. Nobody
-        movieName = "Mr. Nobody";
-        console.log("You didn't enter a movie name.  Here's one we like.");
-    }
+function getMovie (movieName) {
 
     var queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + movieName;
 
@@ -130,31 +106,108 @@ function getMovie () {
 
 
 
+// do-what-it-says
+function getRandom () {
+
+    fs.readFile("random.txt", "utf8", function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+
+        // separate the command from the song name
+        var commandInfo = data.split(",");
+
+        // save command and songName variables
+        var command = commandInfo[0];
+
+        // instructions to follow for each command
+        switch (command) {
+            case "concert-this":
+
+                // save artist name from file
+                // remove quotes around the name
+                var artistName = commandInfo[1].slice(1,-1);
+
+                getConcerts(artistName);
+                break;
+
+            case "spotify-this-song":
+                // save song name from file
+                var songName = commandInfo[1];
+
+                getSongInfo(songName);
+                break;
+
+            case "movie-this":
+
+                // save movie name from file
+                var movieName = commandInfo[1];
+
+                getMovie(movieName);
+                break;
+        }
+
+        
+        
+    })
+}
 
 
-// save command
+
+
+
+
+// save command entered
 var command = process.argv[2];
-// console.log("command: " + command)
+
 
 // instructions to follow for each command
 switch (command) {
     case "concert-this":
-        // console.log("concert-this");
-        getConcerts();
+        // pull artist name entered
+        var artistName = process.argv.slice(3).join(" ");
+
+        // if no song name was given, provide default
+        if (artistName === "") {
+            // default to "The Sign" by Ace of Base
+            artistName = "Julia Michaels";
+            console.log("You didn't enter an artist or band.  Here's one we like.");
+        }
+
+        getConcerts(artistName);
         break;
 
     case "spotify-this-song":
-        // console.log("spotify-this-song");
-        getSongInfo();
+        // pull song name user entered
+        var songName = process.argv.slice(3).join(" ");
+        // console.log("songName: " + songName);
+
+        // if no song name was given, provide default
+        if (songName === "") {
+            // default to "The Sign" by Ace of Base
+            songName = "The Sign Ace of Base";
+            console.log("You didn't enter a song.  Here's one we like.");
+        }
+
+        getSongInfo(songName);
         break;
 
     case "movie-this":
-        // console.log("movie-this");
-        getMovie();
+        // pull movie name user entered
+        var movieName = process.argv.slice(3).join(" ");
+
+        // if no movie name was given, provide default
+        if (movieName === "") {
+            // default to Mr. Nobody
+            movieName = "Mr. Nobody";
+            console.log("You didn't enter a movie name.  Here's one we like.");
+        }
+
+        getMovie(movieName);
         break;
 
     case "do-what-it-says":
-        console.log("do-what-it-says");
+        getRandom();
         break;
 }
 
