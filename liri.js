@@ -32,13 +32,33 @@ function getConcerts () {
 
     axios.get(queryUrl)
     .then(function (response) {
+        // limit to 10 results
+        response.data.length = 10;
         // console.log(response.data);
+
+        // show artist name
+        console.log("===============================================================================");
         console.log(artistName);
-        console.log(response.data[0].venue.name);
-        console.log(response.data[0].venue.city + ", " + response.data[0].venue.region);
-        var date = moment(response.data[0].datetime).format("MM/DD/YYYY");
-        console.log(date);
-        console.log(moment(response.data[0].datetime).format("hh:mm A"));
+        console.log("===============================================================================");
+
+        // loop through results to display each
+        for (var i = 0; i < response.data.length; i++) {
+            // name of venue
+            console.log(response.data[i].venue.name);
+            // city and state
+            console.log(response.data[i].venue.city + ", " + response.data[i].venue.region);
+            // use moment.js to change date format
+            var date = moment(response.data[i].datetime).format("MM/DD/YYYY");
+            console.log(date);
+            // use moment.js to format time
+            console.log(moment(response.data[i].datetime).format("hh:mm A"));
+
+            // add space after entry, if not the last one
+            if (i !== (response.data.length -1)) {
+                console.log("\n");
+            }
+        }
+
 
     })
     .catch(function (error) {
