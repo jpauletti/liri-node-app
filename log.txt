@@ -1,0 +1,119 @@
+
+
+
+=====================================================================================================================
+spotify-this-song: Anxiety Julia Michaels
+
+{
+  "songName": "Anxiety (with Selena Gomez)",
+  "artist": "Julia Michaels",
+  "album": "Inner Monologue Part 1",
+  "previewLink": "https://open.spotify.com/album/1xJ7jIK1tT0aVoJw1fPE6r"
+}
+
+
+
+
+=====================================================================================================================
+movie-this: Harry Potter
+
+{
+  "title": "Harry Potter and the Deathly Hallows: Part 2",
+  "year": "2011",
+  "actors": "Ralph Fiennes, Michael Gambon, Alan Rickman, Daniel Radcliffe",
+  "plot": "Harry, Ron, and Hermione search for Voldemort's remaining Horcruxes in their effort to destroy the Dark Lord as the final battle rages on at Hogwarts.",
+  "language": "English",
+  "countryProduced": "USA, UK",
+  "imdbRating": "8.1",
+  "rottenTomatoesRating": "96%"
+}
+
+
+
+
+=====================================================================================================================
+concert-this: Shawn Mendes
+
+{
+  "venue": "Moda Center",
+  "location": "Portland, OR",
+  "date": "06/12/2019",
+  "time": "06:30 PM"
+}
+
+{
+  "venue": "Rogers Arena",
+  "location": "Vancouver, ",
+  "date": "06/14/2019",
+  "time": "06:30 PM"
+}
+
+{
+  "venue": "Rogers Place",
+  "location": "Edmonton, ",
+  "date": "06/16/2019",
+  "time": "06:00 PM"
+}
+
+{
+  "venue": "SaskTel Centre",
+  "location": "Saskatoon, ",
+  "date": "06/17/2019",
+  "time": "06:30 PM"
+}
+
+{
+  "venue": "Bell MTS Place",
+  "location": "Winnipeg, ",
+  "date": "06/19/2019",
+  "time": "06:00 PM"
+}
+
+{
+  "venue": "Xcel Energy Center",
+  "location": "St Paul, MN",
+  "date": "06/21/2019",
+  "time": "06:30 PM"
+}
+
+{
+  "venue": "Wells Fargo Arena",
+  "location": "Des Moines, IA",
+  "date": "06/22/2019",
+  "time": "06:30 PM"
+}
+
+{
+  "venue": "Van Andel Arena",
+  "location": "Grand Rapids, MI",
+  "date": "06/24/2019",
+  "time": "06:00 PM"
+}
+
+{
+  "venue": "Fiserv Forum",
+  "location": "Milwaukee, WI",
+  "date": "06/25/2019",
+  "time": "06:30 PM"
+}
+
+{
+  "venue": "Allstate Arena",
+  "location": "Chicago, IL",
+  "date": "06/27/2019",
+  "time": "06:30 PM"
+}
+
+
+
+
+=====================================================================================================================
+do-what-it-says: 
+
+{
+  "songName": "I Want It That Way",
+  "artist": "Backstreet Boys",
+  "album": "The Hits--Chapter One",
+  "previewLink": "https://open.spotify.com/album/1NslKOZobWxINFaFkLol3r"
+}
+
