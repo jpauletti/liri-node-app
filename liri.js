@@ -194,6 +194,16 @@ function getRandom () {
         // save command and songName variables
         var command = commandInfo[0];
 
+        // log the command and search that's in the random.txt file
+        fs.appendFileSync("log.txt", command + ": " + commandInfo[1] + "\n\n", function (err) {
+            // If an error was experienced we will log it.
+            if (err) {
+                console.log(err);
+            } else {  // if no error is experienced
+                console.log("Search saved to log.txt.");
+            }
+        });
+
         // instructions to follow for each command
         switch (command) {
             case "concert-this":

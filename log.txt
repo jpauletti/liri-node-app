@@ -117,3 +117,16 @@ do-what-it-says:
   "previewLink": "https://open.spotify.com/album/1NslKOZobWxINFaFkLol3r"
 }
 
+
+=====================================================================================================================
+do-what-it-says: 
+
+spotify-this-song: "I Want it That Way"
+
+{
+  "songName": "I Want It That Way",
+  "artist": "Backstreet Boys",
+  "album": "The Hits--Chapter One",
+  "previewLink": "https://open.spotify.com/album/1NslKOZobWxINFaFkLol3r"
+}
+
