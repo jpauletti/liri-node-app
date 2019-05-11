@@ -23,4 +23,4 @@ Uses the following modules:
 
 [Watch a video demo here.](https://youtu.be/zgi5eUL-JnI)
 
-![](assets/images/liri-test.gif)
+![](assets/images/liri-node-app-demo.gif)
