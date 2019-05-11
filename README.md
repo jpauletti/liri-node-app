@@ -13,3 +13,10 @@ do-what-it-says  | Performs a search based on content in a text file.
 
 
 If no search term is provided, an example will be used while informing the user that they did not enter a search term.
+
+
+Uses the following modules:
+* axios
+* dotenv
+* moment
+* node-spotify-api
