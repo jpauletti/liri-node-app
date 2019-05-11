@@ -20,3 +20,7 @@ Uses the following modules:
 * dotenv
 * moment
 * node-spotify-api
+
+[Watch a video demo here.](https://youtu.be/zgi5eUL-JnI)
+
+![](assets/images/liri-test.gif)
