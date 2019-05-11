@@ -37,10 +37,17 @@ function getConcerts (artistName) {
             // use moment.js to format time
             var time = moment(response.data[i].datetime).format("hh:mm A");
 
+            // if other country, list country instead of state
+            if (response.data[i].venue.region === "") {
+                var state = response.data[i].venue.country;
+            } else {
+                var state = response.data[i].venue.region;
+            }
+
             // info to save and print
             var toLog = [
                 response.data[i].venue.name,
-                response.data[i].venue.city + ", " + response.data[i].venue.region,
+                response.data[i].venue.city + ", " + state,
                 date,
                 time
             ].join("\n");
