@@ -23,7 +23,6 @@ function getConcerts (artistName) {
         if (response.data.length > 10) {
             response.data.length = 10;
         }
-        // console.log(response.data);
 
         // show artist name
         console.log("===============================================================================");
@@ -32,59 +31,47 @@ function getConcerts (artistName) {
 
         // loop through results to display each
         for (var i = 0; i < response.data.length; i++) {
-            // name of venue
-            console.log(response.data[i].venue.name);
-            // city and state
-            console.log(response.data[i].venue.city + ", " + response.data[i].venue.region);
+            
             // use moment.js to change date format
             var date = moment(response.data[i].datetime).format("MM/DD/YYYY");
-            console.log(date);
             // use moment.js to format time
-            console.log(moment(response.data[i].datetime).format("hh:mm A"));
+            var time = moment(response.data[i].datetime).format("hh:mm A");
 
-            // add space after entry, if not the last one
-            if (i !== (response.data.length -1)) {
-                console.log("\n");
-            }
+            // info to save and print
+            var toLog = [
+                response.data[i].venue.name,
+                response.data[i].venue.city + ", " + response.data[i].venue.region,
+                date,
+                time
+            ].join("\n");
 
-            var toLog = {
-                venue: response.data[i].venue.name,
-                location: response.data[i].venue.city + ", " + response.data[i].venue.region,
-                date: date,
-                time: moment(response.data[i].datetime).format("hh:mm A")
-            };
+            // log the data to the txt file and console
+            fs.appendFile("log.txt", toLog + "\n\n", function(err) {
 
-            // also log the data to the txt file
-            fs.appendFileSync("log.txt", JSON.stringify(toLog, null, 2) + "\n\n", function(err) {
-
-                // If an error was experienced we will log it.
-                if (err) {
-                console.log(err);
-                } else {  // if no error is experienced
-                console.log("Search saved to log.txt.");
-                }
-
-            });
-
-        }
-
-        if (response.data.length === 0) {
-            console.log("There are no upcoming events for that artist or band.");
-
-            // if no results, log this
-            fs.appendFileSync("log.txt", "There are no upcoming events for that artist or band." + "\n\n", function (err) {
-
-                // If an error was experienced we will log it.
+                // log errors if any
                 if (err) {
                     console.log(err);
-                } else {  // if no error is experienced
-                    console.log("Search saved to log.txt.");
+                } else {
+                    // if no error, log to console
+                    console.log("\n" + toLog + "\n\n");
                 }
 
             });
+
         }
 
+        // if no results
+        if (response.data.length === 0) {
+            var noResults = "There are no upcoming events for that artist or band.";
+            console.log(noResults);
 
+            // if no results, log this
+            fs.appendFile("log.txt", noResults + "\n\n", function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
     })
     .catch(function (error) {
         console.log(error);
@@ -98,31 +85,28 @@ function getConcerts (artistName) {
 // spotify-this-song: spotify api
 function getSongInfo (songName) {
 
+    // spotify api module
     spotify.search({ type: 'track', query: songName }, function(err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
 
-        console.log("Song Name: " + data.tracks.items[0].name);
-        console.log("Artist: " + data.tracks.items[0].artists[0].name);
-        console.log("Album: " + data.tracks.items[0].album.name);
-        console.log("Preview: " + data.tracks.items[0].album.external_urls.spotify); // preview link to the song on spotify
+        // info to save and print
+        var toLog = [
+            "Song Name: " + data.tracks.items[0].name,
+            "Artist: " + data.tracks.items[0].artists[0].name,
+            "Album: " + data.tracks.items[0].album.name,
+            "Preview: " + data.tracks.items[0].album.external_urls.spotify
+        ].join("\n");
 
-        var toLog = {
-            songName: data.tracks.items[0].name,
-            artist: data.tracks.items[0].artists[0].name,
-            album: data.tracks.items[0].album.name,
-            previewLink: data.tracks.items[0].album.external_urls.spotify
-        };
-
-        // also log the data to the txt file
-        fs.appendFileSync("log.txt", JSON.stringify(toLog, null, 2) + "\n\n", function (err) {
-
-            // If an error was experienced we will log it.
+        // log the data to the txt file and console
+        fs.appendFile("log.txt", toLog + "\n\n", function (err) {
+            // log errors if any
             if (err) {
                 console.log(err);
-            } else {  // if no error is experienced
-                console.log("Search saved to log.txt.");
+            } else {
+                // if no error, log to console
+                console.log(toLog);
             }
 
         });
@@ -137,39 +121,30 @@ function getMovie (movieName) {
 
     var queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + movieName;
 
+    // OMDB API call
     axios.get(queryUrl)
     .then(function (response) {
-        console.log(response.data.Title + " (" + response.data.Year +")");
-        console.log("Actors: " + response.data.Actors);
-        console.log("Plot: " + response.data.Plot);
-        console.log("Language: " + response.data.Language);
-        console.log("Country Produced: " + response.data.Country);
-        console.log("IMDb rating: " + response.data.imdbRating);
-        console.log("Rotten Tomatoes rating: " + response.data.Ratings[1].Value);
 
-        var toLog = {
-            title: response.data.Title,
-            year: response.data.Year,
-            actors: response.data.Actors,
-            plot: response.data.Plot,
-            language: response.data.Language,
-            countryProduced: response.data.Country,
-            imdbRating: response.data.imdbRating,
-            rottenTomatoesRating: response.data.Ratings[1].Value
-        };
+        // info to save and print
+        var toLog = [
+            "Actors: " + response.data.Actors,
+            "Plot: " + response.data.Plot,
+            "Language: " + response.data.Language,
+            "Country Produced: " + response.data.Country,
+            "IMDb rating: " + response.data.imdbRating,
+            "Rotten Tomatoes rating: " + response.data.Ratings[1].Value
+        ].join("\n\n");
 
-        // also log the data to the txt file
-        fs.appendFileSync("log.txt", JSON.stringify(toLog, null, 2) + "\n\n", function (err) {
-
-            // If an error was experienced we will log it.
+        // log info to log.txt and to console
+        fs.appendFile("log.txt", toLog + "\n\n", function (err) {
+            // log errors if any
             if (err) {
                 console.log(err);
-            } else {  // if no error is experienced
-                console.log("Search saved to log.txt.");
+            } else {
+                // if no errors, log to console
+                console.log(toLog);
             }
-
         });
-
     })
     .catch(function (error) {
         console.log(error);
@@ -183,6 +158,7 @@ function getMovie (movieName) {
 // do-what-it-says
 function getRandom () {
 
+    // read file to get random command / search
     fs.readFile("random.txt", "utf8", function (err, data) {
         if (err) {
             return console.log(err);
@@ -191,16 +167,14 @@ function getRandom () {
         // separate the command from the song name
         var commandInfo = data.split(",");
 
-        // save command and songName variables
+        // save command as variable
         var command = commandInfo[0];
 
         // log the command and search that's in the random.txt file
-        fs.appendFileSync("log.txt", command + ": " + commandInfo[1] + "\n\n", function (err) {
-            // If an error was experienced we will log it.
+        fs.appendFile("log.txt", command + ": " + commandInfo[1] + "\n\n", function (err) {
+            // log errors if any
             if (err) {
                 console.log(err);
-            } else {  // if no error is experienced
-                console.log("Search saved to log.txt.");
             }
         });
 
@@ -223,15 +197,12 @@ function getRandom () {
                 break;
 
             case "movie-this":
-
                 // save movie name from file
                 var movieName = commandInfo[1];
 
                 getMovie(movieName);
                 break;
         }
-
-        
         
     })
 }
@@ -244,19 +215,23 @@ function getRandom () {
 
 
 
+
+
 // save command entered
 var command = process.argv[2];
 
+// for each new search, we'll add space and a divider
 var newEntry = "\n\n\n" + "=====================================================================================================================" + "\n";
 
-// log command and search to a txt file
-fs.appendFileSync("log.txt", newEntry + command + ": " + process.argv.slice(3).join(" ") + "\n\n", function (err) {
-    // If an error was experienced we will log it.
+// save the command and search
+var searchMade = newEntry + command + ": " + process.argv.slice(3).join(" ") + "\n\n";
+
+// log the command and search to log.txt
+fs.appendFile("log.txt", searchMade, function (err) {
     if (err) {
         console.log(err);
-    } else {  // if no error is experienced
-        console.log("Search saved to log.txt.");
     }
+
 });
 
 
