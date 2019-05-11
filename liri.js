@@ -127,6 +127,7 @@ function getMovie (movieName) {
 
         // info to save and print
         var toLog = [
+            "Title: " + response.data.Title + " (" + response.data.Year + ")",
             "Actors: " + response.data.Actors,
             "Plot: " + response.data.Plot,
             "Language: " + response.data.Language,
@@ -226,13 +227,15 @@ var newEntry = "\n\n\n" + "=====================================================
 // save the command and search
 var searchMade = newEntry + command + ": " + process.argv.slice(3).join(" ") + "\n\n";
 
-// log the command and search to log.txt
-fs.appendFile("log.txt", searchMade, function (err) {
-    if (err) {
-        console.log(err);
-    }
+if (command) {
+    // log the command and search to log.txt
+    fs.appendFile("log.txt", searchMade, function (err) {
+        if (err) {
+            console.log(err);
+        }
 
-});
+    });
+}
 
 
 // instructions to follow for each command
@@ -283,5 +286,8 @@ switch (command) {
     case "do-what-it-says":
         getRandom();
         break;
-}
 
+    default:
+        console.log("Please enter a valid command.");
+        console.log('(Try: "concert-this", "spotify-this-song", "movie-this", or "do-what-it-says")');
+}
